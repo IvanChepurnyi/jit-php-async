@@ -1,0 +1,15 @@
+{
+    "name": "ivan/php-jit-test",
+    "type": "project",
+    "require": {
+        "amphp/http-server": "^2.1",
+        "react/http": "^0.8.6"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Ivan Chepurnyi",
+            "email": "ivan.chepurnyi@ecomdev.org"
+        }
+    ]
+}
