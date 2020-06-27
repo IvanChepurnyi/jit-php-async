@@ -23,14 +23,10 @@ function stop_server() {
 
 
 
-for RPS in 1k 5k 10k 15k 17k 18k 20k 21k 22k 23k 24k
+for RPS in 1k 5k 10k 15k 17k 18k 20k 21k 22k
 do
   start_server $TYPE bin/$SERVICE-http-server.php
   OUTPUT=results/$TEST_NAME/$RPS.txt
   docker run --rm --network=host -it --cpuset-cpus "$CPUS_CORES" 1vlad/wrk2-docker -t$WORKER_THREADS -c$CONNECTIONS -d$DURATION -R$RPS --latency http://localhost:8888/ > $OUTPUT
   stop_server
 done
-
-grep -A11 -e "Thread Stats\s*Avg\s*Stdev\s*Max\s*.*\s*Stdev" results/$TEST_NAME/*k.txt > results/$TEST_NAME/summary.txt
-
-cat results/$TEST_NAME/summary.txt
