@@ -11,7 +11,11 @@ use Psr\Log\NullLogger;
 
 Amp\Loop::run(function () {
     $sockets = [
-        Server::listen("0.0.0.0:8888"),
+        Server::listen(
+            "0.0.0.0:8888",
+            (new \Amp\Socket\BindContext())
+                 ->withBacklog(50000)
+        ),
     ];
 
     $counter = 0;

@@ -1,15 +1,16 @@
 #!/bin/bash
 
-export SERVER_CORE=${SERVER_CORE:-13}
-CPUS_CORES=${CPUS_CORES:-0-12}
-WORKER_THREADS=${WORKER_THREADS:-12}
-DURATION=${DURATION:-1m}
+export SERVER_CORE=${SERVER_CORE:-11}
+CPUS_CORES=${CPUS_CORES:-0-10}
+WORKER_THREADS=${WORKER_THREADS:-10}
+DURATION=${DURATION:-40s} # 40 seconds - 10 seconds warm-up = 30 of actual recorded test
 CONNECTIONS=${CONNECTIONS:-500}
+RPS_LIST=${RPS_LIST:-"5k 10k 15k 19k 20k 21k 22k 23k"}
 
 TYPE=$1
 SERVICE=$2
 
-export TEST_NAME="$TYPE-$SERVICE"
+export TEST_NAME="$CONNECTIONS-$TYPE-$SERVICE"
 
 mkdir -p results/$TEST_NAME
 
@@ -23,7 +24,7 @@ function stop_server() {
 
 
 
-for RPS in 1k 5k 10k 15k 17k 18k 20k 21k 22k
+for RPS in $RPS_LIST
 do
   start_server $TYPE bin/$SERVICE-http-server.php
   OUTPUT=results/$TEST_NAME/$RPS.txt

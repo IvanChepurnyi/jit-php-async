@@ -1,21 +1,34 @@
-for TYPE in opcache-amphp jit-amphp opcache-react jit-react
-do
-  echo ""
-  echo "======================"
-  echo "Results for $TYPE: "
-  echo "======================"
-  echo ""
+function print_stats() {
+    FILE=results/$1-$2/$3.txt
 
-  for RPS in 1k 5k 10k 15k 17k 18k 20k 21k 22k
-  do
-    FILE=results/$TYPE/$RPS.txt
     if [ -f $FILE ]
-    then
-      echo ""
-      echo "$RPS Backpressure ($TYPE)"
-      echo "============================================="
-      echo ""
-      grep -A11 -e "Thread Stats\s*Avg\s*Stdev\s*Max\s*.*\s*Stdev" $FILE
+      then
+        echo ""
+        echo "$2"
+        echo "============================================="
+        echo ""
+        grep -A11 -e "Thread Stats\s*Avg\s*Stdev\s*Max\s*.*\s*Stdev" $FILE
+	      grep -B1  -e "Total count\s*=\s*" $FILE
+	      grep "Socket errors:" $FILE
     fi
+}
+
+
+for CONNECTIONS in 500 800 1000
+do
+  echo "#### $CONNECTIONS open connections"
+
+  for TYPE in amphp
+  do
+
+
+    for RPS in 5k 10k 15k 17k 18k 19k 20k 21k 22k
+    do
+      echo "##### $RPS Backpressure"
+      echo "\`\`\`"
+      print_stats $CONNECTIONS "opcache-$TYPE" $RPS
+      print_stats $CONNECTIONS "jit-$TYPE" $RPS
+      echo "\`\`\`"
+    done
   done
 done
