@@ -1,0 +1,12 @@
+{
+  "name": "docker-autocannon",
+  "version": "0.1",
+  "description": "",
+  "license": "MIT",
+  "dependencies": {
+    "autocannon": "^5.0.1"
+  },
+  "scripts": {
+    "load": "autocannon"
+  }
+}
