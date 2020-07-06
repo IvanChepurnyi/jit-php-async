@@ -1,7 +1,7 @@
 FROM node:current-alpine
 
-COPY package.json ./
+COPY app /app
+WORKDIR /app
 RUN yarn --yes
 
-ENTRYPOINT ["yarn"]
-CMD ["run", "load"]
+ENTRYPOINT ["./node_modules/.bin/autocannon"]

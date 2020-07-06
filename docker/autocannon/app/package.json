@@ -5,8 +5,5 @@
   "license": "MIT",
   "dependencies": {
     "autocannon": "^5.0.1"
-  },
-  "scripts": {
-    "load": "autocannon"
   }
 }

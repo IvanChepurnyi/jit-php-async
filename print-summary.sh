@@ -1,3 +1,5 @@
+TYPE=${1:-amphp}
+
 function print_stats() {
     FILE=results/$1-$2/$3.txt
 
@@ -18,17 +20,13 @@ for CONNECTIONS in 500 800 1000
 do
   echo "#### $CONNECTIONS open connections"
 
-  for TYPE in amphp
+
+  for RPS in 5k 10k 15k 17k 18k 19k 20k 21k 22k
   do
-
-
-    for RPS in 5k 10k 15k 17k 18k 19k 20k 21k 22k
-    do
-      echo "##### $RPS Backpressure"
-      echo "\`\`\`"
-      print_stats $CONNECTIONS "opcache-$TYPE" $RPS
-      print_stats $CONNECTIONS "jit-$TYPE" $RPS
-      echo "\`\`\`"
-    done
+    echo "##### $RPS Backpressure"
+    echo "\`\`\`"
+    print_stats $CONNECTIONS "opcache-$TYPE" $RPS
+    print_stats $CONNECTIONS "jit-$TYPE" $RPS
+    echo "\`\`\`"
   done
 done

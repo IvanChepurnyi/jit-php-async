@@ -4,7 +4,7 @@ Set of pure Async PHP http server implementations has been tested with and witho
 
 There was tested [pure PHP implementation](https://github.com/IvanChepurnyi/jit-php-async/blob/main/bin/amphp-http-server.php) of async framework with regular `stream_select` event loop implementation, no additional PHP extensions to boost non-blocking I/O were used.
 
-There is still planned tests runs for ReactPHP, but still looking for best configuration for it, as it was cutoff much earlier than AMPHP.
+There were planned tests for ReactPHP but due to its missing `Keep-Alive` http server feature it impossible to test on single-thread on my hardware it forces closing of each TCP connection on each request. You can find that results are identical for opcache and jit for it as it gets cut off much earlier by linux kernel on `accept` syscal.  
 
 ## Results 
 The test has been performed with [wrk2](https://github.com/giltene/wrk2) load testing tool that was configured to run benchmark in the following request throughput modes:
@@ -23,7 +23,8 @@ Each test run have been increased to 40 seconds from 30 seconds as first 10 seco
 ### Runs
 
 #### 500 open connections
-
+In this run `wrk2` was keeping 500 connections across. 
+ 
 ##### 5k Backpressure
 Opcache and JIT version in this run are in the margin of the error from each other
 ```
@@ -189,7 +190,7 @@ jit-amphp
 ```
 ##### 20k Backpressure
 Total completed number of requests is within a margin of error from each other for both setups, but Opcache version shows noticeable increase in the latency.
-This indicates that http server under opcache starts to be too busy in parsing new HTTP requests.
+This indicates that http server under opcache starts to be too busy in handling new requests.
 ```
 
 opcache-amphp
